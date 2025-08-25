@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+        "name": "(gdb) Pipe Launch",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "/usr/local/src/area_matching/bin/area_matchingd",
+        "cwd": "/usr/local/src/area_matching",
+        "args": ["--c", "/usr/local/src/area_matching/config/epg_parameters.ini", "--cc", "ch#fr", "--sp", "430"],
+        "stopAtEntry": true,
+        "environment": [{ "name": "config", "value": "Debug" }],
+        "externalConsole": true,
+        "sourceFileMap": {
+            "/usr/local/src/area_matching/src":"${workspaceRoot}/src",
+            "/usr/local/src/libepg/src":"${workspaceRoot}/../libepg/src",
+            "/usr/local/src/sd-socle/src":"${workspaceRoot}/../sd-socle/src",
+            "/usr/local/src/area_matching/include":"${workspaceRoot}/include",
+            "/usr/local/src/libepg/include":"${workspaceRoot}/../libepg/include",
+            "/usr/local/src/sd-socle/include":"${workspaceRoot}/../sd-socle/include"
+        },
+        "pipeTransport": {
+            "debuggerPath": "/usr/bin/gdb",
+            "pipeProgram": "docker",
+            "pipeArgs": ["exec", "-i", "area_matching_container", "sh", "-c"],
+            "pipeCwd": "${workspaceRoot}"
+        },
+        "MIMode": "gdb",
+        "setupCommands": [{
+            "description": "Enable pretty-printing for gdb",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+        }]
+    }, ]
+}

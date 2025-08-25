@@ -1,0 +1,7 @@
+bin
+build-unix
+log.txt
+log
+gmon.out
+core
+config/db_conf*
