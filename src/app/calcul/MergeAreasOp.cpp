@@ -275,7 +275,10 @@ namespace app
                 //     bool test = true;
                 // }
 
-                std::pair<bool, ign::feature::Feature> foundBestNeighbour = _getBestNeighbour(mit->second);
+                std::pair<bool, ign::feature::Feature> foundBestNeighbour = _getBestNeighbour(mit->second, true);
+
+                if ( !foundBestNeighbour.first ) 
+                    foundBestNeighbour = _getBestNeighbour(mit->second);
 
                 if ( !foundBestNeighbour.first ) 
                     continue;
@@ -364,20 +367,27 @@ namespace app
         ///
         ///
         std::pair<bool, ign::feature::Feature> MergeAreasOp::_getBestNeighbour(
-            ign::feature::Feature const& fArea
+            ign::feature::Feature const& fArea,
+            bool fromSameCountry
         ) const {
+             // epg parameters
+            epg::params::EpgParameters const& epgParams = epg::ContextS::getInstance()->getEpgParameters();
+            std::string const countryCodeName = epgParams.getValue(COUNTRY_CODE).toString();
+            std::string const geomName = epgParams.getValue(GEOM).toString();
+
+            //--
+            std::string country = fArea.getAttribute(countryCodeName).toString();
+
             //--
             ign::geometry::MultiPolygon const& areaGeom = fArea.getGeometry().asMultiPolygon();
             ign::geometry::MultiLineString mlsExteriorRings;
             for (size_t i = 0 ; i < areaGeom.numGeometries() ; ++i)
                 mlsExteriorRings.addGeometry(areaGeom.polygonN(i).exteriorRing());
 
-            // epg parameters
-            epg::params::EpgParameters const& epgParams = epg::ContextS::getInstance()->getEpgParameters();
-            std::string const countryCodeName = epgParams.getValue(COUNTRY_CODE).toString();
-            std::string const geomName = epgParams.getValue(GEOM).toString();
-
+            //--
             ign::feature::FeatureFilter filterArea("ST_DISTANCE(" + geomName + ", ST_SetSRID(ST_GeomFromText('" + areaGeom.toString() + "'),3035)) < 0.1");
+            if ( fromSameCountry )
+                epg::tools::FilterTools::addAndConditions(filterArea, countryCodeName + " = '" + country +"'" );
             ign::feature::FeatureIteratorPtr itArea = ome2::feature::sql::NotDestroyedTools::GetFeatures(*_fsArea, filterArea);
             
             double maxLength = 0;

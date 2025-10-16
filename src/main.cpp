@@ -100,10 +100,6 @@ int main(int argc, char *argv[])
         // logger->setProdOfstream( logDirectory+"/au_merging.log" );
         logger->setDevOfstream( context->getLogDirectory()+"/area_matching.log" );
 
-        //shape logger
-        epg::log::ShapeLogger* shapeLogger = epg::log::ShapeLoggerS::getInstance();
-	    shapeLogger->setDataDirectory( context->getLogDirectory()+"/shape" );
-
         //set BDD search path
         context->getDataBaseManager().setSearchPath(themeParameters->getValue(WORKING_SCHEMA).toString());
         ome2::utils::setTableName<app::params::ThemeParametersS>(LANDMASK_TABLE);

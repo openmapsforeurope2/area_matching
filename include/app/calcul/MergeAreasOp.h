@@ -67,7 +67,8 @@ namespace calcul{
 
         //--
         std::pair<bool, ign::feature::Feature> _getBestNeighbour(
-            ign::feature::Feature const& fArea
+            ign::feature::Feature const& fArea,
+			bool fromSameCountry = false
         ) const;
 
 		//--
