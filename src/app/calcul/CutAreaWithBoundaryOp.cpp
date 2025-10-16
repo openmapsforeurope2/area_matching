@@ -148,8 +148,7 @@ namespace app
                 fArea.setAttribute(wTagName, ign::data::String("split_area"));
                 for (size_t i = 0 ; i < vPolygons.size() ; ++i) {
 
-                    if( vPolygons[i].is3D() )
-                        tools::zFiller(vPolygons[i], -1000); //TODO a parametrer
+                    tools::zFiller(vPolygons[i], -1000); //TODO a parametrer
 
                     fArea.setGeometry(vPolygons[i].toMulti());
                     _fsArea->createFeature(fArea);
