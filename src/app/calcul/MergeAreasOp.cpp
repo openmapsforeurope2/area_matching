@@ -1,6 +1,7 @@
 // APP
 #include <app/calcul/MergeAreasOp.h>
 #include <app/params/ThemeParameters.h>
+#include <app/tools/geometry/GeometryCleaner.h>
 
 // BOOST
 #include <boost/progress.hpp>
@@ -232,7 +233,7 @@ namespace app
                 double area = mp.area();
 
                 //DEBUG
-                // if ( mp.intersects( ign::geometry::Point(4089689.79,2543176.70))) {
+                // if ( mp.intersects( ign::geometry::Point(4332836.9,2637380.4))) {
                 //     bool test = true;
                 // }
                 // if ( mp.intersects( ign::geometry::Point(4089689.79,2543176.70))) {
@@ -289,6 +290,7 @@ namespace app
                 ign::geometry::GeometryPtr snappedGeomPtr(ign::geometry::algorithm::SnapOpGeos::SnapTo( foundBestNeighbour.second.getGeometry(), mit->second.getGeometry(), 0.1 ));
                 ign::geometry::GeometryPtr snappedResultPtr(ign::geometry::algorithm::SnapOpGeos::SnapTo( *snappedGeomPtr, foundBestNeighbour.second.getGeometry(), 0.1 ));
                 ign::geometry::GeometryPtr resultingGeomPtr(snappedResultPtr->Union(*snappedGeomPtr));
+                tools::geometry::GeometryCleaner::Compute(*resultingGeomPtr);
 
                 //DEBUG
                 // {
