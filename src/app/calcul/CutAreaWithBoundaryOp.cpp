@@ -128,6 +128,7 @@ namespace app
                 ign::feature::Feature fArea = itArea->next();
                 ign::geometry::MultiPolygon const& mp = fArea.getGeometry().asMultiPolygon();
                 std::string idOrigin = fArea.getId();
+                bool is3D = mp.is3D();
 
                 //--
                 std::vector<ign::geometry::Polygon> vPolygons;
@@ -147,9 +148,11 @@ namespace app
 
                 fArea.setAttribute(wTagName, ign::data::String("split_area"));
                 for (size_t i = 0 ; i < vPolygons.size() ; ++i) {
-
-                    tools::zFiller(vPolygons[i], -1000); //TODO a parametrer
-
+                    
+                    if (is3D) {
+                        tools::zFiller(vPolygons[i], -1000); //TODO a parametrer
+                    }
+                        
                     fArea.setGeometry(vPolygons[i].toMulti());
                     _fsArea->createFeature(fArea);
                 }
