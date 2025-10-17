@@ -27,6 +27,8 @@ namespace params{
 		_initParameter( COUNTRY_CODE_W, "COUNTRY_CODE_W");
 		_initParameter( W_TAG_NAME, "W_TAG_NAME");
 
+		_initParameter( GC_ANGLE_THRESHOLD, "GC_ANGLE_THRESHOLD");
+
 		_initParameter( MA_SMALL_AREA_THRESHOLD, "MA_SMALL_AREA_THRESHOLD");
 		_initParameter( MA_SLIM_AREA_THRESHOLD, "MA_SLIM_AREA_THRESHOLD");
 	}

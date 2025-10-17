@@ -146,6 +146,7 @@ namespace app
             //--
 			app::params::ThemeParameters* themeParameters = app::params::ThemeParametersS::getInstance();
 			std::string const wTagName = themeParameters->getParameter(W_TAG_NAME).getValue().toString();
+            double const cleaningAngle = themeParameters->getValue(GC_ANGLE_THRESHOLD).toDouble();
 
             ign::feature::FeatureFilter filterArea( wTagName + " IS NOT NULL" );
             int numFeatures = ome2::feature::sql::NotDestroyedTools::NumFeatures(*_fsArea, filterArea);
@@ -236,7 +237,7 @@ namespace app
                 fArea.setAttribute(wTagName, ign::data::String("split_area"));
                 for ( size_t i = 0 ; i < mpResult.numGeometries() ; ++i ) {
                     //on supprime les artefacts
-                    tools::geometry::GeometryCleaner::Compute(mpResult.polygonN(i));
+                    tools::geometry::GeometryCleaner::Compute(mpResult.polygonN(i), cleaningAngle);
 
                     if( mpResult.polygonN(i).isEmpty() )
                         continue;

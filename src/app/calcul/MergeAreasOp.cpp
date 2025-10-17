@@ -111,6 +111,7 @@ namespace app
 			app::params::ThemeParameters* themeParameters = app::params::ThemeParametersS::getInstance();
 			std::string const wTagName = themeParameters->getParameter(W_TAG_NAME).getValue().toString();
 	        std::string const natIdIdName = themeParameters->getValue(NATIONAL_IDENTIFIER_NAME).toString();
+	        double const cleaningAngle = themeParameters->getValue(GC_ANGLE_THRESHOLD).toDouble();
 
             ign::feature::FeatureFilter filterArea( wTagName + " IS NOT NULL" );
             int numFeatures = ome2::feature::sql::NotDestroyedTools::NumFeatures(*_fsArea, filterArea);
@@ -128,14 +129,6 @@ namespace app
                 std::string idOrigin = fArea.getId();
                 std::string natId = fArea.getAttribute(natIdIdName).toString();
 
-                //DEBUG
-                // if ( mp.intersects( ign::geometry::Point(4041531.3,2937780.9))) {
-                //     bool test = true;
-                // }
-                // if ( mp.intersects( ign::geometry::Point(4041532.9,2937761.2))) {
-                //     bool test = true;
-                // }
-
                 std::map<std::string, ign::geometry::GeometryPtr>::iterator mit = mNatIdMergedGeom.find(natId);
                 if( mit == mNatIdMergedGeom.end() ) {
                     mNatIdMergedGeom.insert(std::make_pair(natId, ign::geometry::GeometryPtr(mp.clone())));
@@ -143,7 +136,9 @@ namespace app
                 } else {
                     ign::geometry::GeometryPtr snappedGeomPtr(ign::geometry::algorithm::SnapOpGeos::SnapTo( *mit->second, mp, 0.1 ));
                     ign::geometry::GeometryPtr snappedResultPtr(ign::geometry::algorithm::SnapOpGeos::SnapTo( *snappedGeomPtr, *mit->second, 0.1 ));
-                    mit->second.reset(snappedResultPtr->Union(*snappedGeomPtr));
+                    ign::geometry::GeometryPtr resultingGeomPtr(snappedResultPtr->Union(*snappedGeomPtr));
+                    tools::geometry::GeometryCleaner::Compute(*resultingGeomPtr, cleaningAngle);
+                    mit->second.reset(resultingGeomPtr.release());
                 }
                 mNatIdIds[natId].insert(idOrigin);
             }
@@ -194,13 +189,6 @@ namespace app
                 ign::feature::Feature featRef;
                 _fsArea->getFeatureById(*mit->second.begin(), featRef);
                 for ( size_t i = 0 ; i < mpResult.numGeometries() ; ++i ) {
-                    //DEBUG
-                    // if ( mpResult.polygonN(i).intersects( ign::geometry::Point(4041531.3,2937780.9))) {
-                    //     bool test = true;
-                    // }
-                    // if (!mpResult.polygonN(i).exteriorRing().isSimple()) {
-                    //     epg::tools::geometry::ToValidGeometry::transform(mpResult.polygonN(i));
-                    // }
                     featRef.setGeometry(mpResult.polygonN(i).toMulti());
                     _fsArea->createFeature(featRef);
                 }
@@ -219,6 +207,7 @@ namespace app
 			app::params::ThemeParameters* themeParameters = app::params::ThemeParametersS::getInstance();
             double const areaThreshold = themeParameters->getValue(MA_SMALL_AREA_THRESHOLD).toDouble();
 			std::string const wTagName = themeParameters->getParameter(W_TAG_NAME).getValue().toString();
+            double const cleaningAngle = themeParameters->getValue(GC_ANGLE_THRESHOLD).toDouble();
 
             std::map<double, ign::feature::Feature> mSortedSmallAreas;
 
@@ -231,21 +220,6 @@ namespace app
                 std::string areaId = fArea.getId();
                 
                 double area = mp.area();
-
-                //DEBUG
-                // if ( mp.intersects( ign::geometry::Point(4332836.9,2637380.4))) {
-                //     bool test = true;
-                // }
-                // if ( mp.intersects( ign::geometry::Point(4089689.79,2543176.70))) {
-                //     bool test = true;
-                // }
-                
-                //DEBUG
-                // if ( _isSlimSurface(mp) ) {
-                //     ign::feature::Feature feat;
-                //     feat.setGeometry(mp);
-                //     _shapeLogger->writeFeature("ma_merged_slim_area", feat);
-                // }
 
                 if( area > areaThreshold && !_isSlimSurface(mp) ) {
                     fArea.setAttribute(wTagName, ign::data::Null());
@@ -267,15 +241,6 @@ namespace app
                 if( sTreatedArea.find(mit->second.getId()) != sTreatedArea.end() )
                     continue;
 
-                //DEBUG
-                // std::string test1 = mit->second.getId();
-                // if ( mit->second.getGeometry().intersects( ign::geometry::Point(4089689.79,2543176.70))) {
-                //     bool test = true;
-                // }
-                // if ( mit->second.getGeometry().intersects( ign::geometry::Point(4041532.9,2937761.2))) {
-                //     bool test = true;
-                // }
-
                 std::pair<bool, ign::feature::Feature> foundBestNeighbour = _getBestNeighbour(mit->second, true);
 
                 if ( !foundBestNeighbour.first ) 
@@ -284,20 +249,10 @@ namespace app
                 if ( !foundBestNeighbour.first ) 
                     continue;
 
-                 //DEBUG
-                // std::string test2 = foundBestNeighbour.second.getId();
-
                 ign::geometry::GeometryPtr snappedGeomPtr(ign::geometry::algorithm::SnapOpGeos::SnapTo( foundBestNeighbour.second.getGeometry(), mit->second.getGeometry(), 0.1 ));
                 ign::geometry::GeometryPtr snappedResultPtr(ign::geometry::algorithm::SnapOpGeos::SnapTo( *snappedGeomPtr, foundBestNeighbour.second.getGeometry(), 0.1 ));
                 ign::geometry::GeometryPtr resultingGeomPtr(snappedResultPtr->Union(*snappedGeomPtr));
-                tools::geometry::GeometryCleaner::Compute(*resultingGeomPtr);
-
-                //DEBUG
-                // {
-                //     ign::feature::Feature feat;
-                //     feat.setGeometry(mit->second.getGeometry());
-                //     _shapeLogger->writeFeature("ma_merged_small_area", feat);
-                // }
+                tools::geometry::GeometryCleaner::Compute(*resultingGeomPtr, cleaningAngle);
 
                 ign::geometry::Geometry::GeometryType geomType = resultingGeomPtr->getGeometryType();
                 switch( geomType )
