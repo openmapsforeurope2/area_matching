@@ -82,7 +82,7 @@
         {
             "label": "run the code",
             "type": "shell",
-            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching ./bin/area_matching --c /usr/local/src/area_matching/config/epg_parameters.ini --cc ch#fr --sp 430",
+            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching ./bin/area_matching --c /usr/local/src/area_matching/config/epg_parameters.ini --t glacier_snowfield --cc at#ch",
             "group": "build",
             "problemMatcher": []
         },
