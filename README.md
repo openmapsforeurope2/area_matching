@@ -46,17 +46,19 @@ L'outil s'utilise en ligne de commande.
 
 Paramètres:
 * c [obligatoire] : chemin vers le fichier de configuration
-* cc [obligatoire] : code frontière (exemple : be#fr)
-* sp [obligatoire] : étape(s) à executer (exemples: 410 ; 410,425 ; 410-425)
+* s [obligatoire] : suffix de la table de travail
+* t [obligatoire] : nom de la classe d'objet (drainage_basin ou glacier_snowfield)
+* sp [optionnel] : étape(s) à executer (exemples: 410 ; 410,425 ; 410-425)
+* arguments libres [obligatoire] : codes des deux pays frontaliers
 
 <br>
 
 Exemple d'appel pour lancer successivement l'ensemble des étapes sur la frontière franco-belge :
 ~~~
-bin/area_matching --c path/to/config/epg_parameters.ini --cc be#fr
+bin/area_matching --c path/to/config/epg_parameters.ini --t drainage_basin --s 20251113 fr be
 ~~~
 
 Exemple d'appel pour ne lancer qu'une seule étape :
 ~~~
-bin/area_matching --c path/to/config/epg_parameters.ini --cc be#fr --sp 420
+bin/area_matching --c path/to/config/epg_parameters.ini --t drainage_basin --s 20251113 --sp 420 fr be
 ~~~

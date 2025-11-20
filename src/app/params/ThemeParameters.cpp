@@ -18,6 +18,7 @@ namespace params{
 		_initParameter( DB_CONF_FILE, "DB_CONF_FILE");
 		_initParameter( WORKING_SCHEMA, "WORKING_SCHEMA");
 		_initParameter( AREA_TABLE_INIT, "AREA_TABLE_INIT");
+		_initParameter( AREA_TABLE_INIT_BASE, "AREA_TABLE_INIT_BASE");
 		_initParameter( LANDMASK_TABLE, "LANDMASK_TABLE");
 		_initParameter( LANDMASK_TABLE, "LANDMASK_TABLE" );
 		_initParameter( LAND_COVER_TYPE_NAME, "LAND_COVER_TYPE_NAME" );

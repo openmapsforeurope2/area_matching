@@ -8,7 +8,7 @@
         "request": "launch",
         "program": "/usr/local/src/area_matching/bin/area_matchingd",
         "cwd": "/usr/local/src/area_matching",
-        "args": ["--c", "/usr/local/src/area_matching/config/epg_parameters.ini", "--cc", "ch#fr", "--sp", "430"],
+        "args": ["--c", "/usr/local/src/area_matching/config/epg_parameters.ini", "--t", "glacier_snowfield", "--s", "20251113", "--sp", "430", "ch", "at"],
         "stopAtEntry": true,
         "environment": [{ "name": "config", "value": "Debug" }],
         "externalConsole": true,
@@ -23,7 +23,7 @@
         "pipeTransport": {
             "debuggerPath": "/usr/bin/gdb",
             "pipeProgram": "docker",
-            "pipeArgs": ["exec", "-i", "area_matching_container", "sh", "-c"],
+            "pipeArgs": ["exec", "-i", "area_matching_base_container", "sh", "-c"],
             "pipeCwd": "${workspaceRoot}"
         },
         "MIMode": "gdb",

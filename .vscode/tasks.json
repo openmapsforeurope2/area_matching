@@ -4,7 +4,7 @@
         {
             "label": "build package",
             "type": "shell",
-            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching ./build-unix-package.sh",
+            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching_base ./build-unix-package.sh",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -28,7 +28,7 @@
         {
             "label": "build release",
             "type": "shell",
-            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching ./build-unix-release.sh",
+            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching_base ./build-unix-release.sh",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -52,7 +52,7 @@
         {
             "label": "build debug",
             "type": "shell",
-            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching ./build-unix-debug.sh",
+            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching_base ./build-unix-debug.sh",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -82,14 +82,14 @@
         {
             "label": "run the code",
             "type": "shell",
-            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching ./bin/area_matching --c /usr/local/src/area_matching/config/epg_parameters.ini --t glacier_snowfield --cc at#ch",
+            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching area_matching_base ./bin/area_matching --c /usr/local/src/area_matching/config/epg_parameters.ini --t glacier_snowfield --s 20251113 at ch",
             "group": "build",
             "problemMatcher": []
         },
         {
             "label": "prepare to debug",
             "type": "shell",
-            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching --name area_matching_container -it area_matching ",
+            "command": "docker run --privileged -v ${workspaceFolder}:/usr/local/src/area_matching --name area_matching_base_container -it area_matching_base ",
             "group": "build",
             "problemMatcher": []
         }
