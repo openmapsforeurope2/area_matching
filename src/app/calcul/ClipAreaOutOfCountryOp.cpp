@@ -94,7 +94,7 @@ namespace app
             ign::feature::FeatureIteratorPtr itBoundary = ome2::feature::sql::NotDestroyedTools::GetFeatures(*fsBoundary,boundaryFilter);
             while (itBoundary->hasNext())
             {
-                ign::feature::Feature const& fBoundary = itBoundary->next();
+                ign::feature::Feature fBoundary = itBoundary->next();
                 ign::geometry::LineString const& ls = fBoundary.getGeometry().asLineString();
 
                 ign::geometry::GeometryPtr tmpBuffPtr(ls.buffer(20000));
@@ -113,7 +113,7 @@ namespace app
                 ign::feature::FeatureIteratorPtr itLandmask = ome2::feature::sql::NotDestroyedTools::GetFeatures(*fsLandmask,ign::feature::FeatureFilter("("+landCoverTypeName + " = '" + landAreaValue +"' OR "+ landCoverTypeName + " = '" + inlandwaterValue + "') AND " + countryCodeName + " = '" + *vit + "'"));
                 while (itLandmask->hasNext())
                 {
-                    ign::feature::Feature const& fLandmask = itLandmask->next();
+                    ign::feature::Feature fLandmask = itLandmask->next();
                     ign::geometry::MultiPolygon const& mp = fLandmask.getGeometry().asMultiPolygon();
 
                     //on calcul la geometry de travail
@@ -184,7 +184,7 @@ namespace app
                 {
                     foundIntersection = true;
 
-                    ign::feature::Feature const& fOtherArea = itOtherArea->next();
+                    ign::feature::Feature fOtherArea = itOtherArea->next();
                     ign::geometry::MultiPolygon const& OtherAreaGeom = fOtherArea.getGeometry().asMultiPolygon();
 
                     ign::geometry::GeometryPtr snappedGeomPtr(ign::geometry::algorithm::SnapOpGeos::SnapTo( *allOthersPtr, OtherAreaGeom, 0.1 ));

@@ -94,7 +94,7 @@ namespace app
             ign::feature::FeatureIteratorPtr itBoundary = ome2::feature::sql::NotDestroyedTools::GetFeatures(*fsBoundary, boundaryFilter);
             while (itBoundary->hasNext())
             {
-                ign::feature::Feature const& fBoundary = itBoundary->next();
+                ign::feature::Feature fBoundary = itBoundary->next();
                 ign::geometry::LineString const& ls = fBoundary.getGeometry().asLineString();
 
                 ign::geometry::GeometryPtr tmpBuffPtr(ls.buffer(20000));
@@ -113,7 +113,7 @@ namespace app
                 ign::feature::FeatureIteratorPtr itLandmask = ome2::feature::sql::NotDestroyedTools::GetFeatures(*fsLandmask,ign::feature::FeatureFilter("("+landCoverTypeName + " = '" + landAreaValue +"' OR "+ landCoverTypeName + " = '" + inlandwaterValue + "') AND " + countryCodeName + " = '" + *vit + "'"));
                 while (itLandmask->hasNext())
                 {
-                    ign::feature::Feature const& fLandmask = itLandmask->next();
+                    ign::feature::Feature fLandmask = itLandmask->next();
                     ign::geometry::MultiPolygon const& mp = fLandmask.getGeometry().asMultiPolygon();
 
                     //on calcul la geometry de travail
@@ -161,7 +161,7 @@ namespace app
             std::map<std::string, vertex_descriptor> mAreaVertex;
             while (itArea->hasNext())
             {
-                ign::feature::Feature const& fArea = itArea->next();
+                ign::feature::Feature fArea = itArea->next();
                 std::string areaId = fArea.getId();
 
                 mAreaVertex.insert(std::make_pair(areaId, graph.addVertex()));
@@ -177,7 +177,7 @@ namespace app
             {
                 ++display;
 
-                ign::feature::Feature const& fArea = itArea->next();
+                ign::feature::Feature fArea = itArea->next();
                 ign::geometry::MultiPolygon const& areaGeom = fArea.getGeometry().asMultiPolygon();
                 std::string areaId = fArea.getId();
                 std::string const& areaCountry = fArea.getAttribute(countryCodeName).toString();
@@ -189,7 +189,7 @@ namespace app
                 ign::feature::FeatureIteratorPtr itArea2 = ome2::feature::sql::NotDestroyedTools::GetFeatures(*_fsArea, filterArea);
                 while (itArea2->hasNext())
                 {
-                    ign::feature::Feature const& fNeighbour = itArea2->next();
+                    ign::feature::Feature fNeighbour = itArea2->next();
                     std::string idNeighbour = fNeighbour.getId();
                     graph.addEdge( mAreaVertex[areaId], mAreaVertex[idNeighbour]);
 
@@ -210,7 +210,7 @@ namespace app
             {
                 ++display2;
 
-                ign::feature::Feature const& fArea = itArea->next();
+                ign::feature::Feature fArea = itArea->next();
                 ign::geometry::MultiPolygon const& areaGeom = fArea.getGeometry().asMultiPolygon();
                 std::string areaId = fArea.getId();
                 std::string const& areaCountry = fArea.getAttribute(countryCodeName).toString();

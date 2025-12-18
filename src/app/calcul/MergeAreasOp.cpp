@@ -124,7 +124,7 @@ namespace app
             {
                 ++display;
                 
-                ign::feature::Feature const& fArea = itArea->next();
+                ign::feature::Feature fArea = itArea->next();
                 ign::geometry::MultiPolygon const& mp = fArea.getGeometry().asMultiPolygon();
                 std::string idOrigin = fArea.getId();
                 std::string natId = fArea.getAttribute(natIdIdName).toString();
@@ -351,7 +351,7 @@ namespace app
             ign::feature::Feature featMax;
             while (itArea->hasNext())
             {
-                ign::feature::Feature const& fNeighbour = itArea->next();
+                ign::feature::Feature fNeighbour = itArea->next();
                 std::string idNeighbour = fNeighbour.getId();
 
                 if(idNeighbour == fArea.getId()) continue;
