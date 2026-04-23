@@ -40,6 +40,7 @@ namespace app
         CutAreaWithBoundaryOp::~CutAreaWithBoundaryOp()
         {
             // _shapeLogger->closeShape("cbl_working_zone");
+            delete _boundaryTool;
         }
 
         ///
@@ -77,13 +78,6 @@ namespace app
             std::string const geomName = epgParams.getValue(GEOM).toString();
             std::string const countryCodeName = epgParams.getValue(COUNTRY_CODE).toString();
 
-            // app parameters
-            params::ThemeParameters *themeParameters = params::ThemeParametersS::getInstance();
-            std::string const landmaskTableName = themeParameters->getValue(LANDMASK_TABLE).toString();
-            std::string const landCoverTypeName = themeParameters->getValue(LAND_COVER_TYPE_NAME).toString();
-            std::string const landAreaValue = themeParameters->getValue(TYPE_LAND_AREA).toString();
-			std::string const inlandwaterValue = themeParameters->getValue(TYPE_INLAND_WATER).toString();
-
             //--
             _fsArea = context->getDataBaseManager().getFeatureStore(areaTableName, idName, geomName);
 
@@ -118,7 +112,7 @@ namespace app
 
             ign::feature::FeatureFilter filterArea;
             int numFeatures = ome2::feature::sql::NotDestroyedTools::NumFeatures(*_fsArea, filterArea);
-            boost::progress_display display(numFeatures, std::cout, "[ area clipping  % complete ]\n");
+            boost::progress_display display(numFeatures, std::cout, "[ area cutting % complete ]\n");
 
             ign::feature::FeatureIteratorPtr itArea = ome2::feature::sql::NotDestroyedTools::GetFeatures(*_fsArea, filterArea);
             while (itArea->hasNext())

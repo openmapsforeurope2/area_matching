@@ -43,7 +43,7 @@ namespace app
         MergeAreasOp::~MergeAreasOp()
         {
             _shapeLogger->closeShape("ma_merged_small_area");
-            // _shapeLogger->closeShape("ma_merged_slim_area");
+            _shapeLogger->closeShape("ma_merged_small_area_other_country");
         }
 
         ///
@@ -68,7 +68,7 @@ namespace app
             //--
             _shapeLogger = epg::log::ShapeLoggerS::getInstance();
             _shapeLogger->addShape("ma_merged_small_area", epg::log::ShapeLogger::POLYGON);
-            // _shapeLogger->addShape("ma_merged_slim_area", epg::log::ShapeLogger::POLYGON);
+            _shapeLogger->addShape("ma_merged_small_area_other_country", epg::log::ShapeLogger::POLYGON);
 
             //--
             epg::Context *context = epg::ContextS::getInstance();
@@ -243,10 +243,17 @@ namespace app
 
                 std::pair<bool, ign::feature::Feature> foundBestNeighbour = _getBestNeighbour(mit->second, true);
 
-                if ( !foundBestNeighbour.first ) 
-                    foundBestNeighbour = _getBestNeighbour(mit->second);
+                if ( !foundBestNeighbour.first ) {
+                    //DEBUG
+                    _shapeLogger->writeFeature("ma_merged_small_area_other_country", mit->second);
 
-                if ( !foundBestNeighbour.first ) 
+                    foundBestNeighbour = _getBestNeighbour(mit->second);
+                } else {
+                    //DEBUG
+                    _shapeLogger->writeFeature("ma_merged_small_area", mit->second);
+                }
+                    
+                if ( !foundBestNeighbour.first )
                     continue;
 
                 ign::geometry::GeometryPtr snappedGeomPtr(ign::geometry::algorithm::SnapOpGeos::SnapTo( foundBestNeighbour.second.getGeometry(), mit->second.getGeometry(), 0.1 ));
@@ -285,7 +292,9 @@ namespace app
             return sTreatedArea.size() > 0;
         }
 
-
+        ///
+        ///
+        ///
         bool MergeAreasOp::_isSlimSurface( ign::geometry::MultiPolygon const& mp ) const {
             //--
 			app::params::ThemeParameters* themeParameters = app::params::ThemeParametersS::getInstance();
@@ -369,7 +378,7 @@ namespace app
                 }
             }
 
-            return std::make_pair(maxLength == 0 ? false:true, featMax);
+            return std::make_pair(maxLength != 0, featMax);
         }
     }
     

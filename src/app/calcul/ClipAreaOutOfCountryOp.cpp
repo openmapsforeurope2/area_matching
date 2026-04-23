@@ -150,7 +150,7 @@ namespace app
 
             ign::feature::FeatureFilter filterArea( wTagName + " IS NOT NULL" );
             int numFeatures = ome2::feature::sql::NotDestroyedTools::NumFeatures(*_fsArea, filterArea);
-            boost::progress_display display(numFeatures, std::cout, "[ area clipping  % complete ]\n");
+            boost::progress_display display(numFeatures, std::cout, "[ area clipping % complete ]\n");
 
             ign::feature::FeatureIteratorPtr itArea = ome2::feature::sql::NotDestroyedTools::GetFeatures(*_fsArea, filterArea);
             while (itArea->hasNext())
