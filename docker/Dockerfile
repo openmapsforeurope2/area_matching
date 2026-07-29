@@ -31,8 +31,8 @@ RUN mkdir -p /deps \
 # =========================
 FROM ubuntu:24.04
 
-RUN apt-get update -y \
- && apt-get -y install valgrind
+# RUN apt-get update -y \
+#  && apt-get -y install valgrind
 
 ENV APP_DIR_SRC=/usr/local/src/area_matching/
 

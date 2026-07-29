@@ -1,7 +1,3 @@
-![under_construction](images/under_construction.png)
-
-
-
 # Introduction
 
 La présente documentation, à destination des développeurs, a pour objectif de présenter le détail du fonctionnement du processus de mise en cohérences des données de type surfacique aux frontières ainsi que les principaux outils mis en oeuvre.
@@ -30,7 +26,7 @@ Le code source du socle ce trouve sur le dépôt [sd-socle](http://gitlab.forge-
 ### LibEPG 
 
 Cette bibliothèque, développée à l'IGN et s'appuyant essentiellement sur le socle logiciel, contient de nombreux algorithmes et fonctions utilitaires dédiés spécifiquement aux besoins des produits européens (EGM/ERM) ainsi qu'au projet [OME2](https://github.com/openmapsforeurope2/OME2).
-Elle comporte essentiellement des fonctions de généralisations, des fonctions utiles au management du processus tels que des utilitaires de log, d'orchestration, de gestion du contexte).
+Elle comporte essentiellement des fonctions de généralisations, des fonctions utiles au management du processus tels que des utilitaires de log, d'orchestration, de gestion du contexte.
 On y trouve également des opérateurs permettant d'encapsuler des objets géométriques complexes afin d'en optimiser la manipulation (par l'utilisation de graphes, d'indexes...) et ainsi d'accroitre les performances globales des processus.
 
 Le code source de la bibliothèque libepg ce trouve sur le dépôt [libepg](https://github.com/IGNF/libepg.git)
@@ -58,13 +54,6 @@ Les étapes qui composent le traitement de raccordement sont les suivantes :
 
 **410** - découpe des surfaces des deux pays avec les frontières
 <br>
-
-********************************************************************
-********************************************************************
-********************************************************************
-********************************************************************
-********************************************************************
-********************************************************************confirmer la phrase ci-dessous
 **420** - pour les surfaces hors pays, on soustrait les portions de surface superposées aux surfaces du pays hôte.
 <br>
 **425** - suppression des surfaces hors pays isolées (non connectés directement ou indirectement avec une surface dans le pays)

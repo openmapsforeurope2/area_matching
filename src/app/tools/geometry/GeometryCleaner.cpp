@@ -68,9 +68,9 @@ namespace geometry{
         ign::math::Vec2d vecPrevious = ls.endPoint().toVec2d();
         for ( int i = ls.numPoints()-2 ; i > 0 ; ) {
             //DEBUG
-            if ( ls.pointN(i).distance(ign::geometry::Point(4089835.489,2545755.286)) < 0.1) {
-                bool test = true;
-            }
+            // if ( ls.pointN(i).distance(ign::geometry::Point(4089835.489,2545755.286)) < 0.1) {
+            //     bool test = true;
+            // }
             ign::math::Vec2d vecCurrent = ls.pointN(i).toVec2d();
             ign::math::Vec2d vecNext = ls.pointN(i-1).toVec2d();
 

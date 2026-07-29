@@ -11,15 +11,12 @@
 
 //OME2
 #include <ome2/utils/setTableName.h>
-#include <ome2/utils/getEnvStr.h>
 
 //APP
 #include <app/params/ThemeParameters.h>
 #include <app/step/tools/initSteps.h>
 
-
 namespace po = boost::program_options;
-
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +24,7 @@ int main(int argc, char *argv[])
 	std::string     logDirectory = "";
 	std::string     epgParametersFile = "";
 	std::string     themeParametersFile = "";
+    std::string     dbName = "";
     std::string     suffix = "";
 	std::string     stepCode = "";
 	std::string     borderCode = "";
@@ -44,6 +42,7 @@ int main(int argc, char *argv[])
     desc.add_options()
         ("help", "produce help message")
         ("c" , po::value< std::string >(&epgParametersFile)     , "conf file" )
+        ("d" , po::value< std::string >(&dbName)                , "data base name" )
         ("t" , po::value< std::string >(&table)                 , "table" )
         ("s", po::value< std::string >(&suffix)                 , "working table suffix" )
 		("sp", po::value< std::string >(&stepCode), OperatorDetail.str().c_str())
@@ -58,7 +57,6 @@ int main(int argc, char *argv[])
 
     int returnValue = 0;
     try{
-
         po::parsed_options parsed = po::command_line_parser(argc, argv)
                                     .options(desc)
                                     .allow_unregistered()
@@ -87,7 +85,7 @@ int main(int argc, char *argv[])
         //parametres EPG
 		context->loadEpgParameters( epgParametersFile, table );
 
-        //Initialisation du loepg::params::EpgParametersS::kill();g de prod
+        //Initialisation du log de prod
         logDirectory = context->getConfigParameters().getValue( LOG_DIRECTORY ).toString();
 
         //test si le dossier de log existe sinon le creer
@@ -113,6 +111,8 @@ int main(int argc, char *argv[])
 
         //info de connection db
         context->loadEpgParameters( themeParameters->getValue(DB_CONF_FILE).toString() );
+        if( dbName != "" )
+            context->getConfigParameters().setParameter(DATABASE, ign::data::String(dbName));
 
         //epg logger
         epg::log::EpgLogger* logger = epg::log::EpgLoggerS::getInstance();
@@ -155,6 +155,7 @@ int main(int argc, char *argv[])
     }
     
     logFile << "[END] " << epg::tools::TimeTools::getTime() << std::endl;
+    
     epg::ContextS::kill();
     epg::log::EpgLoggerS::kill();
     epg::log::ShapeLoggerS::kill();

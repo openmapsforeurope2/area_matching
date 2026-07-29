@@ -133,7 +133,7 @@ namespace geometry{
 			sTreatedFaces.insert(*fit);
 
 			//DEBUG
-			ign::geometry::Polygon faceG = _graph.getGeometry( *fit );
+			// ign::geometry::Polygon faceG = _graph.getGeometry( *fit );
 			// if (faceG.intersects(ign::geometry::Point(4017319.3,3084558.2))) {
 			// 	bool test = true;
 			// }
