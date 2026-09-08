@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
         //table de travail
         if ( !suffix.empty() ) {
             std::string tableBaseName = themeParameters->getValue(AREA_TABLE_INIT_BASE).toString();
-            std::string tableName = tableBaseName + "_" + countries.front() + "_" + countries.back() + "_" + suffix;
+            std::string tableName = tableBaseName + "_" + suffix;
             themeParameters->setParameter(AREA_TABLE_INIT, ign::data::String(tableName));
         }
 
